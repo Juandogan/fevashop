@@ -59,7 +59,7 @@ app.use((req,res,next)=>{
     next();
 });
 // Cors
-app.use('/',express.static('client/', {redirect:false}));
+//app.use('/',express.static('client/', {redirect:false}));
 app.use(bodyparser.urlencoded({extended:true}))
 app.use(bodyparser.json({extended:true, limit:'500mb'}))
 
@@ -73,6 +73,14 @@ app.use('/api', venta_route)
 app.use('/', mercado_pago_route)
 app.get('*', function(req, res, next){res.sendFile(path.resolve('client/index.html'));}) 
 
+app.use(express.static('client', {
+    setHeaders: (res, path, stat) => {
+      if (path.endsWith('.js')) {
+        res.set('Content-Type', 'application/javascript');
+      }
+    }
+  }));
+    
 
 
 
